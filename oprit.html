@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpritMeesters – Oprit & Terras Reinigen</title>
+  <meta name="description" content="Professionele oprit- en terrasreiniging. Snel ingepland, vaste m²-prijs, streeploos resultaat. Plan direct je afspraak in de kalender." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0c10; /* donker antraciet */
+      --card:#111218; 
+      --muted:#1a1c24;
+      --brand:#4cc9f0; /* fris blauw */
+      --brand-2:#22b8cf; /* secundair */
+      --text:#e9edf1;
+      --sub:#b7c0cb;
+      --ok:#8be38b;
+      --warn:#ffd166;
+      --radius:18px;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0a0b10 0%, #0f1020 100%);color:var(--text)}
+    a{color:var(--brand);text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    header{position:sticky;top:0;backdrop-filter:saturate(120%) blur(8px);background:rgba(10,11,16,.6);border-bottom:1px solid rgba(255,255,255,.06);z-index:20}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:40px;height:40px;border-radius:12px;background:radial-gradient(60% 60% at 30% 30%,#ffffff 0%,#bfe9ff 40%,#4cc9f0 100%);display:grid;place-items:center;box-shadow:0 6px 18px rgba(76,201,240,.35)}
+    .logo svg{filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+    .brand h1{font-size:18px;letter-spacing:.5px;margin:0}
+    .btn{display:inline-grid;place-items:center;padding:12px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));color:var(--text);font-weight:600;box-shadow:var(--shadow);transition:.2s}
+    .btn:hover{transform:translateY(-1px);opacity:.95}
+    .btn-primary{background:linear-gradient(180deg,var(--brand),var(--brand-2));border:none;color:#001217}
+    .hero{padding:64px 0 32px;display:grid;gap:26px}
+    .hero h2{font-size:40px;line-height:1.1;margin:6px 0}
+    .hero p{color:var(--sub);font-size:18px;max-width:740px}
+    .badges{display:flex;flex-wrap:wrap;gap:10px}
+    .badge{font-size:13px;padding:8px 12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:999px;color:#dfe7ef}
+
+    .grid{display:grid;gap:18px}
+    @media(min-width:900px){.grid-3{grid-template-columns:1.2fr 1fr 1fr}}
+    @media(min-width:900px){.grid-2{grid-template-columns:1.15fr .85fr}}
+
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .card .inner{padding:20px}
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .kpi{background:var(--muted);border-radius:14px;padding:16px;text-align:center}
+    .kpi strong{font-size:22px;display:block}
+
+    .section{padding:34px 0}
+    .section h3{margin:0 0 14px;font-size:26px}
+    .list{display:grid;gap:10px}
+    .li{display:flex;gap:10px;align-items:flex-start}
+    .li svg{flex:0 0 20px;margin-top:2px}
+
+    .pricing{display:grid;gap:14px}
+    @media(min-width:900px){.pricing{grid-template-columns:1fr 1fr 1fr}}
+    .price{padding:18px;border-radius:16px;background:var(--muted);border:1px solid rgba(255,255,255,.08)}
+    .price h4{margin:0 0 6px;font-size:18px}
+    .price .num{font-size:28px;font-weight:700}
+
+    .calendar{display:grid;gap:12px}
+    .cal-head{display:flex;align-items:center;justify-content:space-between}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+    .cal-day,.cal-dow{aspect-ratio:1/1;display:grid;place-items:center;border-radius:12px}
+    .cal-dow{font-size:12px;color:#b7c0cb}
+    .cal-day{
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      cursor:pointer;
+      color:#d9d9d9;
+    }
+    .cal-day[disabled]{opacity:.35;cursor:not-allowed}
+    .cal-day.active{outline:2px solid var(--brand);box-shadow:0 0 0 4px rgba(76,201,240,.15) inset}
+    .slots{display:flex;flex-wrap:wrap;gap:8px}
+    .slot{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);cursor:pointer;font-size:13px;color:#d9d9d9;}
+    .slot.active{background:linear-gradient(180deg,var(--brand),var(--brand-2));color:#001217;border:none}
+
+    form{display:grid;gap:12px}
+    label{font-size:13px;color:#c9d3de}
+    input,select,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--text)}
+    textarea{min-height:90px}
+
+    footer{padding:26px 0;color:#96a3b2;border-top:1px solid rgba(255,255,255,.06);margin-top:40px}
+
+    .pill{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px}
+    .cta-bar{position:fixed;right:18px;bottom:18px;display:flex;gap:8px;z-index:30}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-label="logo OpritMeesters">
+          <img src="images4/logo.jpeg" alt="OpritMeesters logo" style="width:100%;height:auto;border-radius:12px;">
+        </div>
+        <h1>OpritMeesters</h1>
+        <span class="pill">Oprit & Terras Reinigen</span>
+      </div>
+      <nav>
+        <a class="btn" href="#prijzen">Prijzen</a>
+        <a class="btn btn-primary" href="#boeken">Plan afspraak</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <span class="pill">Binnen 48 uur ingepland • Streeploos resultaat</span>
+      <h2>Je oprit weer als nieuw – <span style="color:var(--brand)">snel</span>, <span style="color:var(--brand)">netjes</span> en <span style="color:var(--brand)">betaalbaar</span>.</h2>
+      <p>Wij reinigen opritten en terrassen met professionele apparatuur en een vaste m²-prijs. We werken netjes, beschermen de straatkolk, en maken foto’s vóór & na. Plan direct je afspraak in onze kalender.</p>
+      <div class="badges">
+        <span class="badge">Vaste prijs & duidelijke offerte</span>
+        <span class="badge">Anti-algbehandeling beschikbaar</span>
+        <span class="badge">Burenactie: 10% p.p. bij 3 adressen</span>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="inner">
+            <h3>Waarom OpritMeesters</h3>
+            <div class="list">
+              <div class="li">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5" stroke="#8be38b" stroke-width="2"/></svg>
+                <div>Binnen <b>48 uur</b> ingepland, duidelijke communicatie via WhatsApp of e-mail.</div>
+              </div>
+              <div class="li">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v18M3 12h18" stroke="#8be38b" stroke-width="2"/></svg>
+                <div><b>Netjes & veilig</b>: kolk afdekken waar nodig, werken zonder rommel.</div>
+              </div>
+              <div class="li">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12a9 9 0 1018 0A9 9 0 003 12z" stroke="#8be38b" stroke-width="2"/></svg>
+                <div><b>Streeploos</b> met vlakreiniger, randen met lans. Optioneel: <b>anti-alg</b> en <b>impregneren</b>.</div>
+              </div>
+            </div>
+            <div class="kpis" style="margin-top:14px">
+              <div class="kpi"><strong>4.9★</strong><span>Klantscore</span></div>
+              <div class="kpi"><strong>48u</strong><span>Snelle planning</span></div>
+              <div class="kpi"><strong>100+</strong><span>Opdrachten</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="inner">
+            <h3>Voor & Na</h3>
+            <div class="list" style="gap:14px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div style="border-radius:14px;height:200px;background:linear-gradient(135deg,#2a2d3a 0%,#202231 100%);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08)">
+                  <img src="images4/voor.jpeg" alt="Voor reiniging" style="width:100%;height:100%;object-fit:cover;border-radius:14px;">
+                </div>
+                <div style="border-radius:14px;height:200px;background:linear-gradient(135deg,#3ddc97 0%,#2bb673 100%);display:grid;place-items:center;border:1px solid rgba(255,255,255,.08)">
+                  <img src="images4/na.jpeg" alt="Na reiniging" style="width:100%;height:100%;object-fit:cover;border-radius:14px;">
+                </div>
+              </div>
+              <small style="color:#a9b4c4"></small>
+            </div>
+          </div>
+        </div>
+        <div id="prijzen" class="card">
+          <div class="inner">
+            <h3>Prijzen (richtlijn)</h3>
+            <div class="pricing">
+              <div class="price"><h4>Klein</h4><div class="num">€99</div><div>tot 30 m²</div></div>
+              <div class="price"><h4>Middel</h4><div class="num">€149</div><div>30–60 m²</div></div>
+              <div class="price"><h4>Groot</h4><div class="num">v.a. €199</div><div>>60 m²</div></div>
+            </div>
+            <p style="color:#a9b4c4;margin-top:10px">Opties: anti-alg +€1,50/m² · impregneren +€8/m² · olievlek-spot €35</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="boeken" class="section">
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="inner">
+            <h3>Plan je afspraak</h3>
+            <p class="sub">Kies eerst een datum en tijdslot. Vul daarna je gegevens in en verstuur de aanvraag. Wij bevestigen binnen 24 uur.</p>
+            <div class="calendar" aria-label="Kalender afspraak">
+              <div class="cal-head">
+                <button id="prevMonth" class="btn" type="button" aria-label="Vorige maand">◀</button>
+                <div id="monthLabel" style="font-weight:700"></div>
+                <button id="nextMonth" class="btn" type="button" aria-label="Volgende maand">▶</button>
+              </div>
+              <div class="cal-grid" id="dow"></div>
+              <div class="cal-grid" id="days"></div>
+              <div>
+                <label for="slots">Tijdslot</label>
+                <div class="slots" id="slots"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="inner">
+            <h3>Gegevens</h3>
+            <form id="bookForm">
+              <div>
+                <label>Naam</label>
+                <input required name="name" placeholder="Voor- en achternaam" />
+              </div>
+              <div>
+                <label>Adres</label>
+                <input required name="address" placeholder="Straat + huisnummer, plaats" />
+              </div>
+              <div>
+                <label>E-mail</label>
+                <input required type="email" name="email" placeholder="jij@example.nl" />
+              </div>
+              <div>
+                <label>Telefoon</label>
+                <input required name="phone" placeholder="06-…" />
+              </div>
+              <div>
+                <label>Oppervlakte (m²)</label>
+                <input required type="number" min="5" step="1" name="sqm" placeholder="Bijv. 45" />
+              </div>
+              <div>
+                <label>Opties</label>
+                <select name="option">
+                  <option value="Reinigen">Alleen reinigen</option>
+                  <option value="Reinigen + Anti-alg">Reinigen + Anti-alg</option>
+                  <option value="Reinigen + Anti-alg + Impregneren">Reinigen + Anti-alg + Impregneren</option>
+                </select>
+              </div>
+              <div>
+                <label>Opmerking</label>
+                <textarea name="note" placeholder="Bijv. olievlek, moeilijk bereik, foto gestuurd via WhatsApp"></textarea>
+              </div>
+              <input type="hidden" name="date" id="dateField" required />
+              <input type="hidden" name="time" id="timeField" required />
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <button class="btn btn-primary" type="submit">Aanvraag versturen</button>
+                <button class="btn" type="button" id="icsBtn"> Zet in je kalender! </button>
+              </div>
+              <small style="color:#a9b4c4">Let op: dit is een <b>aanvraag</b>. We bevestigen via WhatsApp of e-mail.</small>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card"><div class="inner">
+        <h3>Veelgestelde vragen</h3>
+        <div class="list">
+          <div class="li"><strong>Hoeveel water gebruiken jullie?</strong> Ongeveer 10 liter per m². Een oprit van 50 m² is ca. 500 liter (minder dan één badkuip).</div>
+          <div class="li"><strong>Wat als er veel alg of olie zit?</strong> We kunnen anti-alg toepassen en olievlekken lokaal behandelen.</div>
+          <div class="li"><strong>Wat doen jullie met de straatkolk?</strong> We dekken indien nodig af en werken volgens de lokale regels. Netjes en veilig.</div>
+          <div class="li"><strong>Hoe snel kunnen jullie komen?</strong> Meestal binnen 48 uur. Plan direct via de kalender.</div>
+        </div>
+      </div></div>
+    </section>
+  </main>
+
+  <div class="cta-bar">
+    <a class="btn" href="#prijzen">Bekijk prijzen</a>
+    <a class="btn btn-primary" href="#boeken">Plan afspraak</a>
+  </div>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> OpritMeesters · Professionele oprit & terras reiniging · <a href="#boeken">Afspraak plannen</a>
+    </div>
+  </footer>
+
+  <script>
+    // ====== Helpers ======
+    const $ = (q) => document.querySelector(q);
+    const $$ = (q) => Array.from(document.querySelectorAll(q));
+
+    // ====== Calendar state ======
+    const state = {
+      today: new Date(),
+      view: new Date(),
+      selectedDate: null,
+      selectedTime: null,
+      slots: ["08:30", "10:30", "13:30", "15:30"],
+    };
+
+    const monthLabel = $('#monthLabel');
+    const daysEl = $('#days');
+    const dowEl = $('#dow');
+    const slotsEl = $('#slots');
+
+    const DOW = ['Ma','Di','Wo','Do','Vr','Za','Zo'];
+
+    function pad(n){return String(n).padStart(2,'0')}
+
+    function startOfMonth(d){return new Date(d.getFullYear(), d.getMonth(), 1)}
+    function endOfMonth(d){return new Date(d.getFullYear(), d.getMonth()+1, 0)}
+
+    function renderDOW(){
+      dowEl.innerHTML = '';
+      DOW.forEach(n=>{
+        const div = document.createElement('div');
+        div.className='cal-dow';
+        div.textContent=n;
+        dowEl.appendChild(div);
+      })
+    }
+
+    function renderMonth(){
+      const view = state.view;
+      const first = startOfMonth(view);
+      const last = endOfMonth(view);
+      const monthName = view.toLocaleDateString('nl-NL', {month:'long', year:'numeric'});
+      monthLabel.textContent = monthName.charAt(0).toUpperCase()+monthName.slice(1);
+
+      daysEl.innerHTML='';
+      const startDow = (first.getDay()+6)%7; // convert Sun=0 to Mon=0
+      // blanks
+      for(let i=0;i<startDow;i++){
+        const b = document.createElement('div');
+        b.className='cal-day';
+        b.style.visibility='hidden';
+        daysEl.appendChild(b);
+      }
+
+      const today = new Date(); today.setHours(0,0,0,0);
+
+      for(let d=1; d<=last.getDate(); d++){
+        const date = new Date(view.getFullYear(), view.getMonth(), d);
+        date.setHours(0,0,0,0);
+        const btn = document.createElement('button');
+        btn.type='button';
+        btn.className='cal-day';
+        btn.textContent = d;
+        const isPast = date < today;
+        if(isPast){btn.setAttribute('disabled',true)}
+        btn.addEventListener('click', ()=>{
+          if(isPast)return;
+          state.selectedDate = new Date(date);
+          $$('#days .cal-day').forEach(el=>el.classList.remove('active'));
+          btn.classList.add('active');
+          renderSlots();
+          syncHiddenFields();
+        });
+        daysEl.appendChild(btn);
+      }
+    }
+
+    function renderSlots(){
+      slotsEl.innerHTML='';
+      state.slots.forEach(t=>{
+        const b = document.createElement('button');
+        b.type='button';
+        b.className='slot';
+        b.textContent=t;
+        b.addEventListener('click', ()=>{
+          state.selectedTime = t;
+          $$('#slots .slot').forEach(el=>el.classList.remove('active'));
+          b.classList.add('active');
+          syncHiddenFields();
+        })
+        slotsEl.appendChild(b);
+      })
+    }
+
+    function syncHiddenFields(){
+      const df = $('#dateField');
+      const tf = $('#timeField');
+      if(state.selectedDate){
+        const yyyy = state.selectedDate.getFullYear();
+        const mm = pad(state.selectedDate.getMonth()+1);
+        const dd = pad(state.selectedDate.getDate());
+        df.value = `${yyyy}-${mm}-${dd}`;
+      }
+      if(state.selectedTime){ tf.value = state.selectedTime; }
+    }
+
+    $('#prevMonth').addEventListener('click', ()=>{
+      state.view = new Date(state.view.getFullYear(), state.view.getMonth()-1, 1);
+      renderMonth();
+    })
+    $('#nextMonth').addEventListener('click', ()=>{
+      state.view = new Date(state.view.getFullYear(), state.view.getMonth()+1, 1);
+      renderMonth();
+    })
+
+    renderDOW();
+    renderMonth();
+    renderSlots();
+
+    // Default select today if possible
+    (function presetToday(){
+      const today = new Date();
+      const isSameMonth = today.getMonth()===state.view.getMonth() && today.getFullYear()===state.view.getFullYear();
+      if(isSameMonth){
+        const idx = ((startOfMonth(state.view).getDay()+6)%7) + today.getDate()-1;
+        const el = $$('#days .cal-day')[idx];
+        if(el && !el.disabled){ el.click(); }
+      }
+    })();
+
+    // ====== Form submit -> WhatsApp (fallback email) ======
+    const PHONE_NUMBER = '31600000000'; // <-- VERVANG met jullie 06-nummer zonder + en zonder leidende 0 (31 voor NL)
+
+    $('#bookForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const data = Object.fromEntries(fd.entries());
+      if(!data.date || !data.time){
+        alert('Kies eerst een datum en tijdslot in de kalender.');
+        return;
+      }
+      const msg = `Nieuwe afspraak-aanvraag via OpritMeesters%0A%0A`+
+        `Naam: ${encodeURIComponent(data.name)}%0A`+
+        `Adres: ${encodeURIComponent(data.address)}%0A`+
+        `E-mail: ${encodeURIComponent(data.email)}%0A`+
+        `Tel: ${encodeURIComponent(data.phone)}%0A`+
+        `Datum: ${encodeURIComponent(data.date)}%0A`+
+        `Tijd: ${encodeURIComponent(data.time)}%0A`+
+        `Oppervlakte: ${encodeURIComponent(data.sqm)} m²%0A`+
+        `Opties: ${encodeURIComponent(data.option)}%0A`+
+        `Opmerking: ${encodeURIComponent(data.note||'—')}`;
+      const wa = `https://wa.me/${PHONE_NUMBER}?text=${msg}`;
+      window.open(wa, '_blank');
+      // fallback email in same window
+      setTimeout(()=>{
+        const mailto = `mailto:info@opritmeesters.nl?subject=Afspraak%20aanvraag&body=${msg}`;
+        window.location.href = mailto;
+      }, 800);
+    });
+
+    // ====== ICS download ======
+    function downloadICS(){
+      const date = $('#dateField').value;
+      const time = $('#timeField').value || '08:30';
+      if(!date){ alert('Kies eerst een datum.'); return; }
+      const [Y,M,D] = date.split('-');
+      const [h,m] = time.split(':');
+      const start = new Date(Date.UTC(+Y, +M-1, +D, +h, +m));
+      const end = new Date(start.getTime() + 90*60000); // 90 min slot
+      function fmt(dt){
+        const yyyy = dt.getUTCFullYear();
+        const mm = pad(dt.getUTCMonth()+1);
+        const dd = pad(dt.getUTCDate());
+        const HH = pad(dt.getUTCHours());
+        const MM = pad(dt.getUTCMinutes());
+        return `${yyyy}${mm}${dd}T${HH}${MM}00Z`;
+      }
+      const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//OpritMeesters//NL\nBEGIN:VEVENT\nUID:${crypto.randomUUID()}\nDTSTAMP:${fmt(new Date())}\nDTSTART:${fmt(start)}\nDTEND:${fmt(end)}\nSUMMARY:OpritMeesters – Afspraak aanvraag\nDESCRIPTION:Automatisch aangemaakt via de website. Wij bevestigen nog per WhatsApp of e-mail.\nEND:VEVENT\nEND:VCALENDAR`;
+      const blob = new Blob([ics], {type:'text/calendar'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `OpritMeesters-${date}-${time.replace(':','')}.ics`;
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+    $('#icsBtn').addEventListener('click', downloadICS);
+
+    // Footer year
+    $('#year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
